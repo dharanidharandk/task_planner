@@ -1,0 +1,301 @@
+/* Small dot for future scheduled tasks in calendar */
+.calendar-task-dot {
+  display: block;
+  /* Calendar day base style */
+  .calendar-day {
+    position: relative;
+    background: #f5f5f5;
+    border-radius: 6px;
+    border: 1.5px solid transparent;
+    color: #222;
+    transition: background 0.2s, border 0.2s, color 0.2s;
+  }
+  /* Today highlight */
+  .calendar-day.today {
+    background: #6c63ff;
+    color: #fff;
+    border: 2.5px solid #6c63ff;
+    font-weight: 700;
+    box-shadow: 0 2px 8px rgba(108,99,255,0.10);
+  }
+  /* Selected date highlight (less than today) */
+  .calendar-day.selected:not(.today) {
+    background: #e0e7ff;
+    color: #2d217c;
+    border: 2px solid #6c63ff;
+    font-weight: 600;
+  }
+  /* Dot for future scheduled tasks */
+  .calendar-day.has-tasks .calendar-task-dot {
+    background: #6c63ff;
+  }
+  .calendar-task-dot {
+    display: block;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #6c63ff;
+    margin: 2px auto 0 auto;
+  }
+  .calendar-day.other-month {
+    background: transparent;
+    color: #bbb;
+    border: none;
+  }
+  .calendar-day.calendar-header {
+    background: transparent;
+    color: #aaa;
+    font-weight: 600;
+    border: none;
+  }
+  .goal-description { font-size: 9px; }
+  .task-subcard { padding: 4px 2px; gap: 4px; }
+  .progress-dashboard, .progress-tracking { padding: 4px; }
+  .tracking-header h2, .progress-title-group h2 { font-size: 10px; }
+  .modal-header h2, .modal-header h3 { font-size: 10px; }
+  .modal-header { padding-bottom: 4px; margin-bottom: 4px; }
+  .scheduled-tasks { padding: 4px; }
+  .planner-wrapper.has-selection { grid-template-columns: 1fr; }
+  .calendar-day { width: 20px; height: 20px; font-size: 8px; }
+  .empty-state p { font-size: 9px; }
+  .stat-main-value { font-size: 10px; }
+  .stat-label, .stat-sub-value { font-size: 8px; }
+  .btn, button { font-size: 11px; padding: 4px 6px; }
+}
+/* Minimal card layout (v2) */
+:root{--card-bg:#fff;--card-radius:14px;--shadow:0 6px 18px rgba(30,30,30,0.06);--muted:#68707d}
+body{font-family:Inter,system-ui,Segoe UI,Arial;margin:20px;background:linear-gradient(135deg,#fff8f6 0%, #f6fff8 100%)}
+header{margin-bottom:32px}
+.greeting{font-size:14px;color:var(--muted);margin-bottom:8px}
+header h1{font-size:48px;font-weight:700;margin:0 0 16px;color:#1a202c;line-height:1.2}
+.subtitle{font-size:16px;color:var(--muted);margin:12px 0 0 0;max-width:600px;line-height:1.6}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-bottom:24px}
+.card{background:var(--card-bg);padding:12px;border-radius:var(--card-radius);box-shadow:var(--shadow);min-height:72px;display:flex;flex-direction:column;justify-content:center}
+.card-icon{font-size:26px;margin-bottom:6px}
+.card-value{font-weight:700;font-size:40px;color:#222}
+.card-label{color:var(--muted);margin-top:8px}
+.tasks{background:rgba(255,255,255,0.6);padding:16px;border-radius:10px}
+.task-list{list-style:none;padding:0;margin:0 0 12px 0}
+.task-list li{display:flex;align-items:center;padding:8px 0;border-bottom:none}
+.task-list input[type="checkbox"]{margin-right:8px;cursor:pointer;width:18px;height:18px}
+.task-list label{cursor:pointer;flex:1;color:#333}
+.card.plan{cursor:pointer;background:linear-gradient(135deg,#fff3e0 0%,#f0f7ff 100%);transition:transform 0.2s,box-shadow 0.2s}
+.card.plan:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(30,30,30,0.12)}
+.card, .stat-card, .scheduled-tasks-list li {
+	transition: transform 0.18s cubic-bezier(.2,.9,.2,1), box-shadow 0.18s;
+	will-change: transform;
+}
+.card:hover, .stat-card:hover, .scheduled-tasks-list li:hover {
+	transform: translateY(-6px);
+	box-shadow: 0 12px 30px rgba(30,30,30,0.14);
+}
+
+/* Task sub-card: small card inside a goal's task list that pops out while the parent
+	 goal-section remains fixed. Use this for Health, Skills, Mental, Balance, Financial,
+	 and Today's Tasks checklists. */
+.task-subcard{
+	width:100%;
+	background:linear-gradient(180deg,#fff7f2 0%, #fffaf8 100%);
+	border-radius:12px;
+	padding:16px 18px;
+	display:flex;
+	align-items:center;
+	gap:16px;
+	box-shadow:0 6px 18px rgba(20,20,20,0.04);
+	transition: transform 0.16s cubic-bezier(.2,.9,.2,1), box-shadow 0.16s;
+}
+.task-subcard .task-title{font-weight:600;color:#1f2933}
+.task-subcard .task-desc{color:rgba(31,41,51,0.6);margin-top:6px}
+.task-subcard:hover{transform:translateY(-6px);box-shadow:0 14px 30px rgba(20,20,20,0.08)}
+
+/* Keep larger containers stable (no pop-out) */
+.goal-section, .progress-dashboard, .progress-tracking{transition:none}
+
+/* Make room for inline delete button and position it */
+.goal-tasks li{position:relative;padding-right:52px}
+.task-delete-btn{position:absolute;right:12px;top:50%;transform:translateY(-50%);background:transparent;border:none;color:#ff6b6b;cursor:pointer;font-size:14px}
+.task-delete-btn:hover{color:#ff4a4a}
+.goals-container{display:grid;grid-template-columns:repeat(auto-fit,minmax(360px,1fr));gap:18px;margin:20px 0}
+.goal-section{background:#ffffff;padding:22px;border-radius:18px;box-shadow:0 8px 24px rgba(16,24,32,0.06)}
+.goal-header{display:flex;align-items:center;margin-bottom:18px;padding-bottom:8px;border-bottom:1px solid rgba(0,0,0,0.04)}
+.goal-icon{font-size:20px;margin-right:14px}
+.goal-info h2{font-size:26px;font-weight:700;margin:0;color:#222}
+.goal-label{display:inline-block;font-size:10px;font-weight:700;letter-spacing:0.8px;color:#ff9966;margin-top:6px;text-transform:uppercase}
+.goal-description{font-size:14px;color:var(--muted);margin-bottom:14px}
+.goal-tasks{list-style:none;padding:0;margin:0}
+.goal-tasks li{display:block;padding:0;margin-bottom:12px;overflow:hidden;border-radius:12px}
+.goal-tasks li:last-child{margin-bottom:0}
+.goal-tasks input[type="checkbox"]{display:inline-block;flex-shrink:0}
+.goal-tasks label{cursor:pointer;flex:1;color:#333}
+.goal-tasks .task-title{display:block;font-weight:500;margin-bottom:2px}
+.goal-tasks .task-desc{display:block;font-size:13px;color:var(--muted)}
+
+/* Custom checkbox styling inside task-subcard */
+.task-subcard input[type="checkbox"]{
+  -webkit-appearance:none; appearance:none;
+  width:22px; height:22px;
+  border:2px solid #ffb99a; border-radius:8px;
+  background:transparent;
+  display:inline-block;
+  flex-shrink:0;
+  margin-right:14px;
+  cursor:pointer;
+  transition:all 0.16s;
+}
+.task-subcard input[type="checkbox"]:checked{
+  background:linear-gradient(90deg,#ff9966,#ffaa88);
+  border-color:transparent;
+}
+.task-subcard input[type="checkbox"]::after{
+  content:''; position:absolute;
+  left:7px; top:3px;
+  width:6px; height:10px;
+  border:solid #fff; border-width:0 2px 2px 0;
+  transform:rotate(45deg);
+  opacity:0;
+}
+.task-subcard input[type="checkbox"]:checked::after{
+  opacity:1;
+}
+.metric-item{margin-bottom:20px;padding-bottom:16px;border-bottom:1px solid rgba(0,0,0,0.04)}
+.metric-item:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
+.metric-label{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px}
+.metric-label span:first-child{font-weight:500;color:#333;font-size:14px}
+.metric-subtitle{font-size:12px;color:var(--muted)}
+.metric-progress-wrap{width:100%;height:8px;background:rgba(0,0,0,0.06);border-radius:4px;overflow:hidden;margin-bottom:6px}
+.metric-progress-bar{height:100%;background:linear-gradient(90deg,#ff9966,#ffaa88);border-radius:4px;transition:width 0.3s}
+.metric-progress-text{font-size:13px;color:#ff9966;font-weight:500;text-align:right}
+.metric-input-wrap{display:flex;align-items:center;justify-content:flex-end;gap:6px}
+.metric-input{width:60px;padding:6px 8px;border:1px solid rgba(0,0,0,0.1);border-radius:6px;font-size:14px;text-align:right}
+.metric-unit{font-size:13px;color:var(--muted);font-weight:500;min-width:25px;text-align:right}
+.add-task-btn{/* removed - Add Task button no longer used */}
+.empty-state{text-align:center;padding:40px 20px;color:var(--muted)}
+.empty-state p{margin:0;font-size:14px;line-height:1.6;max-width:400px}
+.todo-stats{display:flex;gap:24px;margin-top:16px;padding-top:16px;border-top:1px solid rgba(0,0,0,0.04);font-size:14px}
+.stat-item{display:flex;gap:6px;align-items:center}
+.stat-label{color:var(--muted)}
+.stat-value{font-weight:600;color:#222}
+.progress-dashboard{background:rgba(255,255,255,0.8);padding:18px;border-radius:12px;box-shadow:var(--shadow);margin:18px 0}
+.progress-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px}
+.progress-title-group{display:flex;align-items:center;gap:12px}
+.progress-icon{font-size:28px}
+.progress-title-group h2{margin:0;font-size:22px;color:#222}
+.progress-title-group p{margin:4px 0 0 0;color:var(--muted);font-size:13px}
+.progress-circles{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:24px}
+.progress-circle{display:flex;flex-direction:column;align-items:center;justify-content:center}
+.circle-svg{width:120px;height:120px;margin-bottom:8px}
+.circle-label{text-align:center;font-size:13px;color:var(--muted);font-weight:500}
+.progress-tracking{background:rgba(255,255,255,0.8);padding:18px;border-radius:12px;box-shadow:var(--shadow);margin:18px 0}
+.tracking-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;border-bottom:1px solid rgba(0,0,0,0.06);padding-bottom:16px}
+.tracking-title{display:flex;align-items:center;gap:12px}
+.tracking-icon{font-size:28px}
+.tracking-title h2{margin:0;font-size:22px;color:#222}
+.tracking-tabs{display:flex;gap:12px}
+.tab-btn{background:transparent;border:none;padding:8px 16px;font-size:13px;font-weight:500;cursor:pointer;color:var(--muted);border-bottom:2px solid transparent;transition:all 0.2s}
+.tab-btn.active{color:#ff6b6b;border-bottom-color:#ff6b6b}
+.tracking-chart-area{background:rgba(0,0,0,0.02);padding:40px;border-radius:10px;margin-bottom:24px;text-align:center}
+.tracking-chart-area h3{margin:0 0 16px 0;font-size:16px;color:#333}
+.chart-placeholder{font-size:48px;color:var(--muted);opacity:0.5}
+.tracking-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px}
+.stat-card{background:rgba(255,200,180,0.1);padding:20px;border-radius:10px;text-align:center}
+.stat-label{font-size:12px;color:var(--muted);font-weight:500;margin-bottom:8px;text-transform:uppercase;letter-spacing:0.5px}
+.stat-main-value{font-size:32px;font-weight:700;color:#222;margin:0}
+.stat-sub-value{font-size:12px;color:var(--muted);margin-top:4px}
+.modal{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);display:flex;align-items:center;justify-content:center;z-index:1000;overflow-y:auto;padding:20px}
+.modal-content{background:#fff;border-radius:14px;padding:28px;max-width:1200px;width:100%;max-height:95vh;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,0.3);display:flex;flex-direction:column}
+.modal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;border-bottom:1px solid rgba(0,0,0,0.06);padding-bottom:16px;flex-shrink:0}
+.modal-header h2{margin:0;font-size:24px;color:#222}
+.modal-close{background:none;border:none;font-size:28px;cursor:pointer;color:var(--muted);padding:0;width:32px;height:32px;display:flex;align-items:center;justify-content:center}
+.modal-close:hover{color:#222}
+.modal-year-planner{max-width:1400px}
+/* modal-add-task styles removed since Add Task modal was removed */
+
+/* Ensure the centered Add Task modal appears above other overlays (Year Planner) */
+.modal-add-task{}
+.btn{padding:8px 12px;border-radius:8px;border:1px solid rgba(0,0,0,0.08);background:#fff;cursor:pointer}
+.btn-primary{background:#ff8866;color:#fff;border:none}
+.btn-primary:hover{background:#ff7755}
+.planner-wrapper{display:grid;grid-template-columns:1fr;gap:24px;flex:1;overflow:hidden}
+.planner-wrapper.has-selection{grid-template-columns:1fr 350px}
+.calendar-container{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;overflow-y:auto;padding-right:12px}
+.calendar-month{display:inline-block;margin:0;padding:12px;background:rgba(0,0,0,0.02);border-radius:10px;border:1px solid rgba(0,0,0,0.08)}
+.calendar-month-header{font-weight:700;font-size:14px;text-align:center;margin-bottom:12px;color:#222}
+.calendar-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+.calendar-day{width:40px;height:40px;display:flex;align-items:center;justify-content:center;border-radius:6px;cursor:pointer;font-size:12px;background:#f5f5f5;transition:all 0.2s;border:1px solid transparent}
+.calendar-day.other-month{color:var(--muted);opacity:0.5}
+.calendar-day.today{background:#ff9966;color:#fff;font-weight:700}
+.calendar-day:not(.other-month):hover{background:#ffeedd;border-color:#ff9966}
+.calendar-day.has-tasks{border:2px solid #ff6b6b;font-weight:700}
+.scheduled-tasks{padding:20px;background:rgba(255,200,180,0.1);border-radius:10px;max-height:70vh;overflow-y:auto;flex-shrink:0;display:none}
+.planner-wrapper.has-selection .scheduled-tasks{display:block}
+.scheduled-tasks h3{margin:0 0 16px 0;color:#222}
+.task-input-group{display:flex;gap:8px;margin-bottom:16px}
+.task-input-group input{flex:1;padding:8px 12px;border:1px solid rgba(0,0,0,0.1);border-radius:6px;font-size:14px}
+.task-input-group button{padding:8px 16px;background:#ff8866;color:#fff;border:none;border-radius:6px;cursor:pointer;font-weight:500}
+.task-input-group button:hover{background:#ff7755}
+.scheduled-tasks-list{list-style:none;padding:0;margin:0}
+.scheduled-tasks-list li{display:flex;justify-content:space-between;align-items:center;padding:10px;background:#fff;border-radius:6px;margin-bottom:8px;border-left:3px solid #ff9966}
+.scheduled-tasks-list button{background:transparent;border:none;color:#ff6b6b;cursor:pointer;font-size:18px;padding:0 8px}
+.scheduled-tasks-list .task-desc{font-size:13px;color:var(--muted);margin-top:6px}
+.scheduled-heading{display:block;font-weight:500;color:var(--muted);margin-bottom:4px;font-size:12px}
+.scheduled-heading-wrap input{flex:1}
+.controls{display:flex;gap:8px;margin-top:32px}
+button{padding:8px 12px;border-radius:8px;border:1px solid rgba(0,0,0,0.08);background:#fff;cursor:pointer}
+@media (max-width:900px) {
+  .cards {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  .goals-container {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  .progress-circles {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  .tracking-stats {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  .modal-content {
+    max-width: 98vw;
+    padding: 12px;
+  }
+  .planner-wrapper {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+  .calendar-container {
+    grid-template-columns: 1fr;
+    padding-right: 0;
+    overflow-x: auto;
+  }
+}
+
+@media (max-width:520px) {
+  body { padding: 0 2vw; }
+  header h1 { font-size: 26px; }
+  .subtitle { font-size: 13px; }
+  .card-value { font-size: 16px; }
+  .card-label { font-size: 18px; font-weight: 600; }
+  .card { min-height: 48px; padding: 8px; }
+  .modal-content { padding: 4px; }
+  .goal-section { padding: 6px; }
+  .goal-header h2 { font-size: 15px; }
+  .goal-label { font-size: 8px; }
+  .goal-description { font-size: 11px; }
+  .task-subcard { padding: 6px 4px; gap: 6px; }
+  .progress-dashboard, .progress-tracking { padding: 6px; }
+  .tracking-header h2, .progress-title-group h2 { font-size: 14px; }
+  .modal-header h2, .modal-header h3 { font-size: 14px; }
+  .modal-header { padding-bottom: 6px; margin-bottom: 6px; }
+  .scheduled-tasks { padding: 6px; }
+  .planner-wrapper.has-selection { grid-template-columns: 1fr; }
+  .calendar-day { width: 26px; height: 26px; font-size: 9px; }
+  .empty-state p { font-size: 11px; }
+  .stat-main-value { font-size: 18px; }
+  .stat-label, .stat-sub-value { font-size: 10px; }
+  .btn, button { font-size: 13px; padding: 6px 8px; }
+}
+

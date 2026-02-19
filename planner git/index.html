@@ -1,0 +1,235 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+  <title>Improvement Dashboard v2</title>
+  <link rel="stylesheet" href="styles_v2.css">
+</head>
+<body>
+  <header>
+    <div class="greeting">Good morning ☀️</div>
+    <h1>Your Growth Journey</h1>
+    <p class="subtitle">Cultivating balance, wisdom, and vitality across the dimensions that matter most</p>
+  </header>
+  <main>
+    <section class="cards">
+      <div class="card">
+        <div class="card-icon">🎯</div>
+        <div class="card-value" id="overallProgress">0%</div>
+        <div class="card-label">Overall Progress</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">🔥</div>
+        <div class="card-value" id="dayStreak">0</div>
+        <div class="card-label">Day Streak</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">✅</div>
+        <div class="card-value" id="tasksDone">0</div>
+        <div class="card-label">Tasks Done</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">💪</div>
+        <div class="card-value" id="activeGoals">0</div>
+        <div class="card-label">Active Goals</div>
+      </div>
+      <a href="#" class="card plan" id="yearPlannerLink">
+        <div class="card-icon">📅</div>
+        <div class="card-label" style="font-size:40px;font-weight:700;line-height:1.1;">Schedule a Task</div>
+        <div class="card-value" id="todaysTaskCardTitle" style="font-size:18px;font-weight:500;line-height:1.2;">Today's Task : 0</div>
+      </a>
+    </section>
+
+    <section class="progress-dashboard">
+      <div class="progress-header">
+        <div class="progress-title-group">
+          <div class="progress-icon">📊</div>
+          <div>
+            <h2>Today's Progress Dashboard</h2>
+            <p>Real-time tracking of your daily achievements</p>
+          </div>
+        </div>
+      </div>
+      <div class="progress-circles" id="progressCircles"></div>
+    </section>
+
+    <section class="goals-container" id="goalsContainer"></section>
+
+    <div class="controls">
+      <button id="completeToday">Mark Today's Completion</button>
+      <button id="resetData">Reset Data</button>
+    </div>
+
+    <section class="progress-tracking">
+      <div class="tracking-header">
+        <div class="tracking-title">
+          <span class="tracking-icon">📈</span>
+          <h2>Progress Tracking</h2>
+        </div>
+        <div class="tracking-tabs">
+          <button class="tab-btn active" data-period="weekly">Weekly</button>
+          <button class="tab-btn" data-period="monthly">Monthly</button>
+          <button class="tab-btn" data-period="yearly">Yearly</button>
+        </div>
+      </div>
+
+      <div class="tracking-chart-area" id="trackingChartArea">
+        <h3>Weekly Progress Chart</h3>
+        <div class="chart-placeholder">📊 Chart will appear here</div>
+      </div>
+
+      <div class="tracking-stats">
+        <div class="stat-card">
+          <div class="stat-label">This Week</div>
+          <div class="stat-main-value" id="thisWeekValue">0%</div>
+          <div class="stat-sub-value" id="thisWeekChange">+0%</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Avg Completion</div>
+          <div class="stat-main-value" id="avgCompletionValue">0%</div>
+          <div class="stat-sub-value">This month</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Best Week</div>
+          <div class="stat-main-value" id="bestWeekValue">0%</div>
+          <div class="stat-sub-value">All time</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Current Streak</div>
+          <div class="stat-main-value" id="currentStreakValue">0</div>
+          <div class="stat-sub-value">days</div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="app_v2.js" defer></script>
+
+  <!-- Year Planner Modal -->
+  <div id="yearPlannerModal" class="modal" style="display:none">
+    <div class="modal-content modal-year-planner">
+      <div class="modal-header">
+        <h2>📅 Year Planner</h2>
+        <button class="modal-close" id="closeYearPlanner">&times;</button>
+      </div>
+      
+      <div class="planner-wrapper">
+        <div class="calendar-container" id="calendarContainer"></div>
+        
+        <div class="scheduled-tasks" id="scheduledTasksPanel">
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;">
+            <h3 style="margin:0">Tasks for <span id="selectedDateDisplay"></span></h3>
+            <button id="closeScheduledPanelBtn" class="btn">Close</button>
+          </div>
+          <div class="task-input-group">
+            <div class="scheduled-heading-wrap">
+              <label for="scheduledTaskInput" class="scheduled-heading">Task Title</label>
+              <div style="display:flex;gap:8px;">
+                <input type="text" id="scheduledTaskInput" placeholder="Add a scheduled task..." />
+                <button id="addScheduledTaskBtn">+ Add</button>
+              </div>
+            </div>
+          </div>
+  
+              <!-- Add Task Modal removed to keep only Year Planner section (no other popups) -->
+          <div style="margin-bottom:12px;">
+            <label for="scheduledTaskDesc" class="scheduled-heading">Task Description</label>
+            <textarea id="scheduledTaskDesc" placeholder="Add a detailed description (optional)..." rows="4" style="width:100%;padding:8px;border-radius:6px;border:1px solid rgba(0,0,0,0.08);"></textarea>
+          </div>
+          <ul id="scheduledTasksList" class="scheduled-tasks-list"></ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+        <!-- View Task Modal (shows title + description centered) -->
+        <div id="viewTaskModal" class="modal" style="display:none">
+          <div class="modal-content" style="max-width:560px;">
+            <div class="modal-header">
+              <h3>Task Details</h3>
+              <button id="closeViewTaskModal" class="modal-close">&times;</button>
+            </div>
+            <div style="padding:8px 4px;">
+              <h4 id="viewTaskTitle" style="margin:0 0 8px 0;font-size:18px;color:#222"></h4>
+              <p id="viewTaskDesc" style="color:var(--muted);margin:0;font-size:14px;white-space:pre-wrap"></p>
+            </div>
+          </div>
+        </div>
+
+      <script>
+        // Toggle scheduled tasks panel when a date is selected in the calendar
+        document.addEventListener('DOMContentLoaded', function () {
+          var calendar = document.getElementById('calendarContainer');
+          var panel = document.getElementById('scheduledTasksPanel');
+          var wrapper = document.querySelector('.planner-wrapper');
+          var selectedDisplay = document.getElementById('selectedDateDisplay');
+          var taskInput = document.getElementById('scheduledTaskInput');
+          var closeScheduled = document.getElementById('closeScheduledPanelBtn');
+
+          if (!calendar || !panel || !selectedDisplay) return;
+
+          // Delegate clicks inside the calendar container. The calendar markup
+          // should include elements that either have a `data-date` attribute
+          // (ISO date preferred) or a `data-day` attribute with the day number.
+          calendar.addEventListener('click', function (e) {
+            var el = e.target;
+            while (el && el !== calendar) {
+              // Prefer an explicit ISO date if available
+              if (el.dataset && el.dataset.date) {
+                selectedDisplay.textContent = el.dataset.date;
+                // store the ISO/date key so the JS calendar can use it
+                panel.dataset.selectedDate = el.dataset.date;
+                if (wrapper) wrapper.classList.add('has-selection');
+                panel.style.display = 'block';
+                if (taskInput) taskInput.focus();
+                return;
+              }
+
+              // Fallback: pick up a day number and optional month/year
+              if (el.dataset && el.dataset.day) {
+                var day = el.dataset.day;
+                var month = el.dataset.month || '';
+                var year = el.dataset.year || '';
+                var display = [day, month, year].filter(Boolean).join(' ');
+                selectedDisplay.textContent = display;
+                // try to normalize to an ISO date (YYYY-MM-DD) for storage keys
+                try{
+                  var monthIndex = Number(month) - 1;
+                  if (isNaN(monthIndex)){
+                    // attempt to parse month name
+                    var parsed = new Date(month + ' 1, 2000');
+                    monthIndex = parsed.getMonth();
+                  }
+                  var y = year ? Number(year) : (new Date()).getFullYear();
+                  var iso = new Date(y, monthIndex, Number(day)).toISOString().slice(0,10);
+                  panel.dataset.selectedDate = iso;
+                }catch(ex){
+                  // fallback to the display string if parsing fails
+                  panel.dataset.selectedDate = display;
+                }
+                if (wrapper) wrapper.classList.add('has-selection');
+                panel.style.display = 'block';
+                if (taskInput) taskInput.focus();
+                return;
+              }
+
+              el = el.parentElement;
+            }
+          });
+
+          // Close/clear the scheduled tasks side panel
+          if(closeScheduled){
+            closeScheduled.addEventListener('click', function(){
+              if(panel) panel.style.display = 'none';
+              if(wrapper) wrapper.classList.remove('has-selection');
+              if(panel) panel.dataset.selectedDate = '';
+              if(selectedDisplay) selectedDisplay.textContent = '';
+              if(taskInput) taskInput.value = '';
+            });
+          }
+        });
+      </script>
+</body>
+</html>
+
